@@ -1,0 +1,42 @@
+# Web Framework
+fastapi==0.111.0
+uvicorn[standard]==0.24.0
+httpx==0.27.0
+
+# ML & ONNX
+onnxruntime==1.18.0
+torch==2.1.0
+transformers==4.35.0
+sentence-transformers==2.2.2
+datasets==2.14.0
+optimum[onnxruntime]==1.14.0
+scikit-learn==1.3.0
+
+# ModernBERT и дополнительные ML зависимости
+# ModernBERT доступен через последнюю версию transformers
+accelerate==0.33.0
+torch-optimizer==0.3.0
+wandb==0.15.0
+tensorboard==2.13.0
+
+# Data validation
+pydantic==2.5.0
+
+# Database & Cache
+clickhouse-connect==0.7.0
+redis==4.6.0
+
+# Auth & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.7
+
+# gRPC
+grpcio==1.60.0
+grpcio-tools==1.60.0
+
+# Async & Utils
+asyncio-mqtt==0.14.0
+python-dotenv==1.0.0
+structlog==23.2.0
+aiohttp==3.9.0 

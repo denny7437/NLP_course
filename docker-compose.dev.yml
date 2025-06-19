@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # Gateway Service
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - PREFILTER_URL=http://prefilter:50051
+      - SAFETY_LLM_URL=http://safety-llm:8000
+      - CLICKHOUSE_URL=http://clickhouse:8123
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET_KEY=dev-secret-key-change-in-production
+      - LOG_LEVEL=INFO
+    depends_on:
+      - prefilter
+      - safety-llm-mock
+      - redis
+    volumes:
+      - ./services/gateway:/app/services/gateway
+    command: uvicorn services.gateway.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Pre-Filter Service
+  prefilter:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.prefilter
+    ports:
+      - "50051:50051"
+    environment:
+      - MODEL_PATH=/app/models/artifacts/pre_filter.onnx
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./services/prefilter:/app/services/prefilter
+      - ./models:/app/models
+    command: python -m services.prefilter.grpc_server --port 50051
+
+  # Mock Safety-LLM Service (для разработки)
+  safety-llm-mock:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.safety-llm-mock
+    ports:
+      - "8001:8000"
+    environment:
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./services/safety-llm:/app/services/safety-llm
+    command: uvicorn services.safety_llm.mock_server:app --host 0.0.0.0 --port 8000 --reload
+
+  # Redis для кеширования и rate limiting
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  # ClickHouse для логирования (опционально)
+  clickhouse:
+    image: clickhouse/clickhouse-server:23.8
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    environment:
+      - CLICKHOUSE_DB=filter_logs
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./deploy/clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  # Web UI (React приложение)
+  web-ui:
+    build:
+      context: ./web-ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./web-ui:/app
+      - /app/node_modules
+    command: npm start
+
+volumes:
+  redis_data:
+  clickhouse_data: 

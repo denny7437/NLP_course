@@ -1,0 +1,229 @@
+{
+  "health": {
+    "status_code": 200,
+    "success": true,
+    "data": {
+      "status": "degraded",
+      "timestamp": 1749676911.8937938,
+      "version": "1.0.0",
+      "components": {
+        "prefilter": {
+          "status": "unhealthy",
+          "error": "[Errno -3] Temporary failure in name resolution"
+        },
+        "safety_llm": {
+          "status": "healthy",
+          "mock": true
+        },
+        "clickhouse": {
+          "status": "healthy",
+          "storage_type": "in_memory_mock",
+          "log_count": 0,
+          "max_capacity": 10000
+        }
+      }
+    },
+    "error": null
+  },
+  "single_filter": {
+    "test_results": [
+      {
+        "test_case": 1,
+        "text": "Hello, how are you today?...",
+        "expected": "safe",
+        "status_code": 200,
+        "success": true,
+        "response_time_ms": 4.6,
+        "data": {
+          "status": "safe",
+          "category": null,
+          "comment": "Контент признан безопасным моделью Safety-LLM (уверенность: 0.80)",
+          "processing_ms": 1.7454959452152252,
+          "request_id": "25d0b57e-3427-4029-beb7-38cb617f3fbf"
+        },
+        "error": null,
+        "prediction_correct": true
+      },
+      {
+        "test_case": 2,
+        "text": "I hate everyone and want to kill them all...",
+        "expected": "unsafe",
+        "status_code": 200,
+        "success": true,
+        "response_time_ms": 3.33,
+        "data": {
+          "status": "unsafe",
+          "category": "toxicity",
+          "comment": "Контент признан небезопасным моделью Safety-LLM (уверенность: 0.80). Причина: Mock analysis result",
+          "processing_ms": 1.3767974451184273,
+          "request_id": "002e3962-1506-4246-a533-5cda00ce2fef"
+        },
+        "error": null,
+        "prediction_correct": true
+      },
+      {
+        "test_case": 3,
+        "text": "This is a simple test message...",
+        "expected": "safe",
+        "status_code": 200,
+        "success": true,
+        "response_time_ms": 3.27,
+        "data": {
+          "status": "safe",
+          "category": null,
+          "comment": "Контент признан безопасным моделью Safety-LLM (уверенность: 0.80)",
+          "processing_ms": 1.456460915505886,
+          "request_id": "0cb7ce22-9cb7-434a-866a-9375ce6b9c76"
+        },
+        "error": null,
+        "prediction_correct": true
+      }
+    ]
+  },
+  "batch_filter": {
+    "status_code": 200,
+    "success": true,
+    "response_time_ms": 4.37,
+    "batch_size": 3,
+    "data": {
+      "responses": [
+        {
+          "status": "safe",
+          "category": null,
+          "comment": "Контент признан безопасным моделью Safety-LLM (уверенность: 0.80)",
+          "processing_ms": 2.2028042003512383,
+          "request_id": "bc74a2f4-c3d6-46aa-becd-6ff674c7261f"
+        },
+        {
+          "status": "unsafe",
+          "category": "toxicity",
+          "comment": "Контент признан небезопасным моделью Safety-LLM (уверенность: 0.80). Причина: Mock analysis result",
+          "processing_ms": 2.0977910608053207,
+          "request_id": "518dbddd-debd-49a4-8992-9ca72fb3dacf"
+        },
+        {
+          "status": "safe",
+          "category": null,
+          "comment": "Контент признан безопасным моделью Safety-LLM (уверенность: 0.80)",
+          "processing_ms": 2.02203169465065,
+          "request_id": "f3a88d20-666b-49a9-9386-2c9bf9026ef2"
+        }
+      ]
+    },
+    "error": null,
+    "responses_count": 3
+  },
+  "logs_stats": {
+    "logs": {
+      "status_code": 200,
+      "success": true,
+      "data": {
+        "logs": [
+          {
+            "timestamp": 1749676912.2808003,
+            "request_id": "f3a88d20-666b-49a9-9386-2c9bf9026ef2",
+            "text_hash": "6db51ca719d6c3efbf3b7756e99499fbb845dd0d27b01ac0d4406f5c95dbe8de",
+            "status": "safe",
+            "category": null,
+            "llm_id": "test",
+            "latency_ms": 2,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 3
+          },
+          {
+            "timestamp": 1749676912.2806842,
+            "request_id": "518dbddd-debd-49a4-8992-9ca72fb3dacf",
+            "text_hash": "7f3f1d035fcf3db5cefb5bd6ec70fc8fec858adfe27b776dd37b21028ad32b1d",
+            "status": "unsafe",
+            "category": "toxicity",
+            "llm_id": "test",
+            "latency_ms": 2,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 4
+          },
+          {
+            "timestamp": 1749676912.2805471,
+            "request_id": "bc74a2f4-c3d6-46aa-becd-6ff674c7261f",
+            "text_hash": "64ec88ca00b268e5ba1a35678a1b5316d212f4f366b2477232534a8aeca37f3c",
+            "status": "safe",
+            "category": null,
+            "llm_id": "test",
+            "latency_ms": 2,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 2
+          },
+          {
+            "timestamp": 1749676912.2762961,
+            "request_id": "0cb7ce22-9cb7-434a-866a-9375ce6b9c76",
+            "text_hash": "22afbb7529b0ddba506f63bd2dbcb4e6e6609bc744ef6fe98c3ab75958451b2b",
+            "status": "safe",
+            "category": null,
+            "llm_id": "test-model",
+            "latency_ms": 1,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 6
+          },
+          {
+            "timestamp": 1749676912.2729492,
+            "request_id": "002e3962-1506-4246-a533-5cda00ce2fef",
+            "text_hash": "32fbe7b566365ace060e4fc6bf4e7d0fe2cd8076e15816273b6b3c46b58b7053",
+            "status": "unsafe",
+            "category": "toxicity",
+            "llm_id": "test-model",
+            "latency_ms": 1,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 9
+          },
+          {
+            "timestamp": 1749676912.2693365,
+            "request_id": "25d0b57e-3427-4029-beb7-38cb617f3fbf",
+            "text_hash": "6e766a49e512e0ba0bc935e2aacd3e5a4a34add17f83afc4c9e669c70241cd48",
+            "status": "safe",
+            "category": null,
+            "llm_id": "test-model",
+            "latency_ms": 1,
+            "pre_score": 0.0,
+            "safety_score": 0.8,
+            "source_ip": "127.0.0.1",
+            "token_count": 5
+          }
+        ],
+        "total": 6,
+        "has_more": false
+      },
+      "error": null
+    },
+    "stats": {
+      "status_code": 200,
+      "success": true,
+      "data": {
+        "total_requests": 6,
+        "safe_requests": 4,
+        "unsafe_requests": 2,
+        "avg_latency_ms": 1.5,
+        "p95_latency_ms": 2.0,
+        "rps": 0.0016666666666666668,
+        "error_rate": 0.0,
+        "prefilter_hit_rate": 66.66666666666666
+      },
+      "error": null
+    }
+  },
+  "rate_limiting": {
+    "total_requests": 20,
+    "success_count": 20,
+    "rate_limited_count": 0,
+    "error_count": 0,
+    "rate_limiting_works": false
+  }
+}
